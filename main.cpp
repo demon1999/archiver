@@ -15,24 +15,33 @@ void my_writer(const std::string &s, FILE * fout) {
     }
 }
 
+void for_frequencies(encoder& my_encoder, decoder& my_decoder, const char* begin, const char* end, FILE * fout) {
+    my_encoder.count_frequencies(begin, end);
+}
+
+void for_encoding(encoder& my_encoder, decoder& my_decoder, const char* begin, const char* end, FILE * fout) {
+    std::string s = my_encoder.encode_text(begin, end);
+    my_writer(s, fout);
+}
+
+void for_decoding(encoder& my_encoder, decoder& my_decoder, const char* begin, const char* end, FILE * fout) {
+    std::string s = my_decoder.decode_text(begin, end);
+    my_writer(s, fout);
+}
+
 void my_reader(FILE * fin, FILE * fout, int r, encoder& my_encoder) {
     static char buffer[SIZE];
-    std::string s;
     decoder my_decoder;
     while (!(std::feof(fin))) {
         auto cnt = std::fread(buffer, sizeof buffer[0], SIZE, fin);
-        std::string ss;
         if (r == 0) {
-            my_encoder.count_frequencies(buffer, buffer + cnt);
-        }
-        if (r == 2) {
-            ss = my_decoder.decode_text(buffer, buffer + cnt);
+            for_frequencies(my_encoder, my_decoder, buffer, buffer + cnt, fout);
         }
         if (r == 1) {
-            ss = my_encoder.encode_text(buffer, buffer + cnt);
+            for_encoding(my_encoder, my_decoder, buffer, buffer + cnt, fout);
         }
-        if (r > 0) {
-            my_writer(ss, fout);
+        if (r == 2) {
+            for_decoding(my_encoder, my_decoder, buffer, buffer + cnt, fout);
         }
     }
 }
