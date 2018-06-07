@@ -2,8 +2,6 @@
 #include "encoder.h"
 #include "decoder.h"
 const size_t SIZE = (1 << 20);
-char buffer[SIZE];
-
 
 void out_help() {
     std::cout << "help: ./archiver (-e | -d) source target" << std::endl;
@@ -18,6 +16,7 @@ void my_writer(const std::string &s, FILE * fout) {
 }
 
 void my_reader(FILE * fin, FILE * fout, int r, encoder& my_encoder) {
+    static char buffer[SIZE];
     std::string s;
     decoder my_decoder;
     while (!(std::feof(fin))) {
