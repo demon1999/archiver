@@ -13,7 +13,7 @@ void out_help() {
 void my_writer(const std::string &s, FILE * fout) {
     size_t cnt = 0;
     while (cnt < s.size()) {
-        cnt += std::fwrite(s.data(), sizeof s[0], s.size() - cnt, fout);
+        cnt += std::fwrite(s.data() + cnt, sizeof s[0], s.size() - cnt, fout);
     }
 }
 
