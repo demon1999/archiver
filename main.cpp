@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 #include "encoder.h"
 #include "decoder.h"
 const size_t SIZE = (1 << 20);
@@ -15,26 +16,11 @@ void my_writer(const std::string &s, FILE * fout) {
     }
 }
 
-void for_frequencies(encoder& my_encoder, decoder& my_decoder, const char* begin, const char* end, FILE * fout) {
-    my_encoder.count_frequencies(begin, end);
-}
-
-void for_encoding(encoder& my_encoder, decoder& my_decoder, const char* begin, const char* end, FILE * fout) {
-    std::string s = my_encoder.encode_text(begin, end);
-    my_writer(s, fout);
-}
-
-void for_decoding(encoder& my_encoder, decoder& my_decoder, const char* begin, const char* end, FILE * fout) {
-    std::string s = my_decoder.decode_text(begin, end);
-    my_writer(s, fout);
-}
-
-void my_reader(FILE * fin, FILE * fout, void (*callback)(encoder&, decoder&, const char*, const char* , FILE *), encoder& my_encoder) {
+void my_reader(FILE * fin, const std::function<void(const char*, const char*)>& callback) {
     static char buffer[SIZE];
-    decoder my_decoder;
     while (!(std::feof(fin))) {
         auto cnt = std::fread(buffer, sizeof buffer[0], SIZE, fin);
-        callback(my_encoder, my_decoder, buffer, buffer + cnt, fout);
+        callback(buffer, buffer + cnt);
     }
 }
 
@@ -47,15 +33,24 @@ int main(int argc, char* argv[]) {
     FILE* fout = std::fopen(argv[3], "wb");
     encoder my_encoder;
     if (option == "-e") {
-        my_reader(fin, fout, for_frequencies, my_encoder);
+        my_reader(fin, [&my_encoder](const char *begin, const char *end) {
+            my_encoder.count_frequencies(begin, end);
+        });
         my_encoder.put_dictionary();
         fclose(fin);
         fin = std::fopen(argv[2], "rb");
-        my_reader(fin, fout, for_encoding, my_encoder);
+        my_reader(fin, [&my_encoder, &fout](const char *begin, const char *end) {
+            std::string s = my_encoder.encode_text(begin, end);
+            my_writer(s, fout);
+        });
         auto ss = my_encoder.encode_end();
         my_writer(ss, fout);
     } else if (option == "-d") {
-        my_reader(fin, fout, for_decoding, my_encoder);
+        decoder my_decoder;
+        my_reader(fin, [&fout, &my_decoder](const char *begin, const char *end) {
+            std::string s = my_decoder.decode_text(begin, end);
+            my_writer(s, fout);
+        });
     } else {
         out_help();
     }
