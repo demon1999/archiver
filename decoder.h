@@ -21,7 +21,7 @@ struct decoder {
         }
         has_all_frequencies = false;
     }
-    std::string decoder_check_sum();
+    void decoder_check_sum();
     ~decoder() = default;
     std::string decode_text(const char* begin, const char* end);
 private:

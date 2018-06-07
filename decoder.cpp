@@ -33,6 +33,6 @@ std::string decoder::decode_text(const char* begin, const char* end) {
     return ans;
 }
 
-std::string decoder::decoder_check_sum() {
+void decoder::decoder_check_sum() {
     my_dictionary.check_sum();
 }
