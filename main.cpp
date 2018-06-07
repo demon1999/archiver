@@ -35,13 +35,6 @@ void my_reader(FILE * fin, FILE * fout, int r, encoder& my_encoder) {
             my_writer(ss, fout);
         }
     }
-    if (r == 0) {
-        my_encoder.put_dictionary();
-    }
-    if (r == 1) {
-        auto ss = my_encoder.encode_end();
-        my_writer(ss, fout);
-    }
 }
 
 int main(int argc, char* argv[]) {
@@ -54,9 +47,12 @@ int main(int argc, char* argv[]) {
     encoder my_encoder;
     if (option == "-e") {
         my_reader(fin, fout, 0, my_encoder);
+        my_encoder.put_dictionary();
         fclose(fin);
         fin = std::fopen(argv[2], "rb");
         my_reader(fin, fout, 1, my_encoder);
+        auto ss = my_encoder.encode_end();
+        my_writer(ss, fout);
     } else if (option == "-d") {
         my_reader(fin, fout, 2, my_encoder);
     } else {
