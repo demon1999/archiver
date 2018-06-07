@@ -40,12 +40,12 @@ int main(int argc, char* argv[]) {
     FILE* fin = std::fopen(argv[2], "rb");
     if (!fin) {
         std::cout << "can't open input file\n";
-        exit(0);
+        return 0;
     }
     FILE* fout = std::fopen(argv[3], "wb");
     if (!fout) {
         std::cout << "can't open output file\n";
-        exit(0);
+        return 0;
     }
     encoder my_encoder;
     if (option == "-e") {
@@ -53,10 +53,9 @@ int main(int argc, char* argv[]) {
             my_encoder.count_frequencies(begin, end);
         });
         my_encoder.put_dictionary();
-        fclose(fin);
         if (std::fclose(fin)) {
             std::cout << "can't close input file\n";
-            exit(0);
+            return 0;
         }
         my_reader(fin, [&my_encoder, &fout](const char *begin, const char *end) {
             std::string s = my_encoder.encode_text(begin, end);
@@ -76,11 +75,11 @@ int main(int argc, char* argv[]) {
     }
     if (std::fclose(fin)) {
         std::cout << "can't close input file\n";
-        exit(0);
+        return 0;
     }
     if (std::fclose(fout)) {
         std::cout << "can't close output file\n";
-        exit(0);
+        return 0;
     }
     return 0;
 }

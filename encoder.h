@@ -22,11 +22,12 @@ struct encoder {
     }
     ~encoder() = default;
     void put_dictionary();
-    std::string full_pieces();
     std::string encode_end();
     void count_frequencies(const char* begin, const char* end);
     std::string encode_text(const char* begin, const char* end);
 private:
+    std::string full_pieces();
+    bool has_been[4] = {false, false, false, false};
     unsigned long long frequencies[ALPHABET]{};
     dictionary my_dictionary;
     bit_queue last_piece;
