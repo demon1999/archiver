@@ -14,9 +14,7 @@ std::string decoder::decode_text(const char* begin, const char* end) {
         if (last_piece.size() < LEN * ALPHABET) return "";
         has_all_frequencies = true;
         for (unsigned long long &frequencie : frequencies) {
-            for (int j = 0; j < LEN / 8; j++) {
-                frequencie = (frequencie << 8ULL) + last_piece.pop_char();
-            }
+            frequencie = last_piece.pop_long();
         }
         my_dictionary.make_dictionary(frequencies);
         my_dictionary.zero_pos();
@@ -24,17 +22,12 @@ std::string decoder::decode_text(const char* begin, const char* end) {
     std::string ans;
     ans = "";
     while (last_piece.size()) {
-        auto q = last_piece.pop_char();
-        for (int i = 7; i >= 0; i--) {
-            auto v = false;
-            if (q & (1 << i)) v = true;
-            if (my_dictionary.get_pos() == -1) continue;
-            my_dictionary.make_step(v);
-            if (my_dictionary.is_terminal()) {
-                if (my_dictionary.get_terminal_char() < ALPHABET - 1)
-                    ans += (char) my_dictionary.get_terminal_char();
-                my_dictionary.zero_pos();
-            }
+        auto v = last_piece.pop_bit();
+        my_dictionary.make_step(v);
+        if (my_dictionary.is_terminal()) {
+            if (my_dictionary.get_terminal_char() < ALPHABET - 1)
+                ans += (char) my_dictionary.get_terminal_char();
+            my_dictionary.zero_pos();
         }
     }
     return ans;

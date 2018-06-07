@@ -16,6 +16,8 @@ struct bit_queue {
     }
     int size();
     char pop_char();
+    bool pop_bit();
+    unsigned long long pop_long();
     void push(symbol_code c);
 private:
     std::deque<unsigned long long> data;

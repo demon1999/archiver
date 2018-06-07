@@ -70,10 +70,6 @@ void dictionary::zero_pos() {
     pos = 0;
 }
 
-int dictionary::get_pos() {
-    return pos;
-}
-
 void dictionary::make_step(bool c) {
     if (pos == -1) return;
     pos = go[c][pos];

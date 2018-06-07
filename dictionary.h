@@ -13,7 +13,6 @@ struct dictionary {
     void make_dictionary(unsigned long long frequencies[ALPHABET]);
     symbol_code get_symbol(int c);
     void zero_pos();
-    int get_pos();
     void make_step(bool c);
     bool is_terminal();
     int get_terminal_char();
