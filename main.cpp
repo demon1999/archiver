@@ -29,20 +29,12 @@ void for_decoding(encoder& my_encoder, decoder& my_decoder, const char* begin, c
     my_writer(s, fout);
 }
 
-void my_reader(FILE * fin, FILE * fout, int r, encoder& my_encoder) {
+void my_reader(FILE * fin, FILE * fout, void (*callback)(encoder&, decoder&, const char*, const char* , FILE *), encoder& my_encoder) {
     static char buffer[SIZE];
     decoder my_decoder;
     while (!(std::feof(fin))) {
         auto cnt = std::fread(buffer, sizeof buffer[0], SIZE, fin);
-        if (r == 0) {
-            for_frequencies(my_encoder, my_decoder, buffer, buffer + cnt, fout);
-        }
-        if (r == 1) {
-            for_encoding(my_encoder, my_decoder, buffer, buffer + cnt, fout);
-        }
-        if (r == 2) {
-            for_decoding(my_encoder, my_decoder, buffer, buffer + cnt, fout);
-        }
+        callback(my_encoder, my_decoder, buffer, buffer + cnt, fout);
     }
 }
 
@@ -55,15 +47,15 @@ int main(int argc, char* argv[]) {
     FILE* fout = std::fopen(argv[3], "wb");
     encoder my_encoder;
     if (option == "-e") {
-        my_reader(fin, fout, 0, my_encoder);
+        my_reader(fin, fout, for_frequencies, my_encoder);
         my_encoder.put_dictionary();
         fclose(fin);
         fin = std::fopen(argv[2], "rb");
-        my_reader(fin, fout, 1, my_encoder);
+        my_reader(fin, fout, for_encoding, my_encoder);
         auto ss = my_encoder.encode_end();
         my_writer(ss, fout);
     } else if (option == "-d") {
-        my_reader(fin, fout, 2, my_encoder);
+        my_reader(fin, fout, for_decoding, my_encoder);
     } else {
         out_help();
     }
