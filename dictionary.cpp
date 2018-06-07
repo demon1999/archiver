@@ -3,6 +3,7 @@
 //
 #include "dictionary.h"
 #include "symbol_code.h"
+#include <limits>
 #include <set>
 #include <cassert>
 #include <iostream>
@@ -56,6 +57,10 @@ void dictionary::make_dictionary(unsigned long long frequencies[ALPHABET]) {
         go[0][term.size() - 1] = a.second;
         go[1][term.size() - 1] = b.second;
         a.second = static_cast<int>(term.size() - 1);
+        if (a.first > std::numeric_limits<unsigned long long>::max() - b.first) {
+            std::cout << "bad frequencies\n";
+            exit(0);
+        }
         a.first += b.first;
         huffman.insert(a);
     }
