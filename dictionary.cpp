@@ -71,21 +71,26 @@ symbol_code dictionary::get_symbol(int c) {
     return huffman_dictionary[c];
 }
 
+void dictionary::is_bad_pos() {
+    if (pos == -1) {
+        std::cout << "something wrong while decoding data\n";
+        exit(0);
+    }
+}
 void dictionary::zero_pos() {
     pos = 0;
 }
 
 void dictionary::make_step(bool c) {
-    if (pos == -1) return;
     pos = go[c][pos];
+    is_bad_pos();
 }
 
 bool dictionary::is_terminal() {
-    if (pos == -1) return false;
     return is_term[pos];
 }
 
 int dictionary::get_terminal_char() {
-    if (pos == -1 || !is_terminal()) assert(false);
+    if (!is_terminal()) assert(false);
     return term[pos];
 }

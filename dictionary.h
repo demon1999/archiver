@@ -24,5 +24,7 @@ private:
     std::vector<bool> is_term;
     std::vector<int> go[2];
     symbol_code huffman_dictionary[ALPHABET];
+
+    void is_bad_pos();
 };
 #endif //ARCHIVER_DICTIONARY_H
