@@ -2,7 +2,7 @@
 #include "encoder.h"
 #include "decoder.h"
 const size_t SIZE = (1 << 20);
-char buffer[SIZE], buffer_write[SIZE * 8 + 256 * 64];
+char buffer[SIZE];
 
 
 void out_help() {
@@ -30,7 +30,6 @@ void my_reader(FILE * fin, FILE * fout, int r, encoder& my_encoder) {
             ss = my_encoder.encode_text(buffer, buffer + cnt);
         }
         if (r > 0) {
-            std::copy(ss.begin(), ss.end(), buffer_write);
             my_writer(ss, fout);
         }
     }
@@ -39,7 +38,6 @@ void my_reader(FILE * fin, FILE * fout, int r, encoder& my_encoder) {
     }
     if (r == 1) {
         auto ss = my_encoder.encode_end();
-        std::copy(ss.begin(), ss.end(), buffer_write);
         my_writer(ss, fout);
     }
 }
