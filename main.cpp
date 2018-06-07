@@ -11,7 +11,10 @@ void out_help() {
 }
 
 void my_writer(const std::string &s, FILE * fout) {
-    std::fwrite(s.data(), sizeof s[0], s.size(), fout);
+    size_t cnt = 0;
+    while (cnt < s.size()) {
+        cnt += std::fwrite(s.data(), sizeof s[0], s.size() - cnt, fout);
+    }
 }
 
 void my_reader(FILE * fin, FILE * fout, int r, encoder& my_encoder) {
