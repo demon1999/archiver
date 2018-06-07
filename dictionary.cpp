@@ -23,6 +23,18 @@ void dictionary::dfs(int nu, unsigned long long s, int szz) {
 
 }
 
+void dictionary::check_sum() {
+    if (my_frequencies.size() != ALPHABET || check_frequencies.size() != ALPHABET) {
+        assert(false);
+    }
+    for (int i = 0; i < ALPHABET - 1; i++) {
+        if (my_frequencies[i] != check_frequencies[i]) {
+            std::cout << "user data is wrong\n";
+            exit(0);
+        }
+    }
+}
+
 void dictionary::add_vertex() {
     term.push_back(' ');
     is_term.push_back(false);
@@ -32,6 +44,9 @@ void dictionary::add_vertex() {
 
 void dictionary::make_dictionary(unsigned long long frequencies[ALPHABET]) {
     add_vertex();
+    my_frequencies.resize(ALPHABET);
+    check_frequencies.assign(ALPHABET, 0);
+    std::copy(frequencies, frequencies + ALPHABET, my_frequencies.begin());
     std::set<std::pair<unsigned long long, int> > huffman;
     for (auto j = 0; j < ALPHABET; j++) {
         if (frequencies[j] == 0) continue;
@@ -92,5 +107,6 @@ bool dictionary::is_terminal() {
 
 int dictionary::get_terminal_char() {
     if (!is_terminal()) assert(false);
+    check_frequencies[term[pos]]++;
     return term[pos];
 }

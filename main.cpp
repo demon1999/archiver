@@ -70,6 +70,7 @@ int main(int argc, char* argv[]) {
             std::string s = my_decoder.decode_text(begin, end);
             my_writer(s, fout);
         });
+        my_decoder.decoder_check_sum();
     } else {
         out_help();
     }

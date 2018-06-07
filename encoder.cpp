@@ -39,7 +39,9 @@ std::string encoder::encode_end() {
         last_piece.push({c, 1});
         pos = (pos + 1) % v.second;
     }
-    return full_pieces();
+    auto ans = full_pieces();
+    my_dictionary.check_sum();
+    return ans;
 }
 
 std::string encoder::encode_text(const char* begin, const char* end) {

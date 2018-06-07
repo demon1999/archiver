@@ -16,6 +16,7 @@ struct dictionary {
     void make_step(bool c);
     bool is_terminal();
     int get_terminal_char();
+    void check_sum();
 private:
     void add_vertex();
     void dfs(int nu, unsigned long long s, int szz);
@@ -23,6 +24,7 @@ private:
     std::vector<int> term;
     std::vector<bool> is_term;
     std::vector<int> go[2];
+    std::vector<unsigned long long> my_frequencies, check_frequencies;
     symbol_code huffman_dictionary[ALPHABET];
 
     void is_bad_pos();
