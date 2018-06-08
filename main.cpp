@@ -25,7 +25,9 @@ void my_reader(FILE * fin, const std::function<void(const char*, const char*)>& 
     while (!(std::feof(fin))) {
         auto cnt = std::fread(buffer, sizeof buffer[0], SIZE, fin);
         std::cerr << "read " << cnt << std::endl;
-        if (cnt < SIZE && !(std::feof(fin))) {
+        if (cnt < SIZE) {
+            if (std::feof(fin))
+                break;
             std::cout << "can't read from file\n";
             exit(0);
         }
