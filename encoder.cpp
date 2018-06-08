@@ -62,6 +62,7 @@ std::string encoder::encode_text(const char* begin, const char* end) {
     }
     has_been[2] = true;
     for (auto c = begin; c != end; c++) {
+        my_dictionary.plus_(*c);
         last_piece.push(my_dictionary.get_symbol((unsigned char)(*c)));
     }
     return full_pieces();

@@ -17,6 +17,7 @@ struct dictionary {
     bool is_terminal();
     int get_terminal_char();
     void check_sum();
+    void plus_(char c);
 private:
     void add_vertex();
     void dfs(int nu, unsigned long long s, int szz);
@@ -26,7 +27,6 @@ private:
     std::vector<int> go[2];
     std::vector<unsigned long long> my_frequencies, check_frequencies;
     symbol_code huffman_dictionary[ALPHABET];
-
     void is_bad_pos();
 };
 #endif //ARCHIVER_DICTIONARY_H

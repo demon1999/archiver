@@ -2,7 +2,6 @@
 // Created by demon1999 on 06.06.18.
 //
 #include "dictionary.h"
-#include "symbol_code.h"
 #include <limits>
 #include <set>
 #include <cassert>
@@ -86,12 +85,16 @@ symbol_code dictionary::get_symbol(int c) {
     return huffman_dictionary[c];
 }
 
+void dictionary::plus_(char c) {
+    check_frequencies[(unsigned char)c]++;
+}
 void dictionary::is_bad_pos() {
     if (pos == -1) {
         std::cout << "something wrong while decoding data\n";
         exit(0);
     }
 }
+
 void dictionary::zero_pos() {
     pos = 0;
 }
