@@ -1,5 +1,6 @@
 #include <iostream>
 #include <functional>
+#include <fstream>
 #include "encoder.h"
 #include "decoder.h"
 const size_t SIZE = (1 << 20);
@@ -9,29 +10,23 @@ void out_help() {
     exit(0);
 }
 
-void my_writer(const std::string &s, FILE * fout) {
-    size_t cnt = 0;
-    while (cnt < s.size()) {
-        cnt += std::fwrite(s.data() + cnt, sizeof s[0], s.size() - cnt, fout);
-        if (std::ferror(fout)) {
-            std::cout << "can't write into file\n";
-            exit(0);
-        }
+void my_writer(const std::string &s, std::ofstream& fout) {
+    fout.write(s.data(), s.size());
+    if (!fout) {
+        std::cout << "can't write into file\n";
+        exit(0);
     }
 }
 
-void my_reader(FILE * fin, const std::function<void(const char*, const char*)>& callback) {
+void my_reader(std::ifstream& fin, const std::function<void(const char*, const char*)>& callback) {
     static char buffer[SIZE];
-    while (!(std::feof(fin))) {
-        auto cnt = std::fread(buffer, sizeof buffer[0], SIZE, fin);
-        std::cerr << "read " << cnt << std::endl;
-        if (cnt < SIZE) {
-            if (std::feof(fin))
-                break;
+    while (!fin.eof()) {
+        auto cnt = fin.readsome(buffer, SIZE);
+        callback(buffer, buffer + cnt);
+        if (!fin) {
             std::cout << "can't read from file\n";
             exit(0);
         }
-        callback(buffer, buffer + cnt);
     }
 }
 
@@ -40,12 +35,12 @@ int main(int argc, char* argv[]) {
         out_help();
     }
     auto option = std::string(argv[1]);
-    FILE* fin = std::fopen(argv[2], "rb");
+    std::ifstream fin{argv[2], std::ifstream::binary};
     if (!fin) {
         std::cout << "can't open input file\n";
         return 0;
     }
-    FILE* fout = std::fopen(argv[3], "wb");
+    std::ofstream fout(argv[3], std::ofstream::binary);
     if (!fout) {
         std::cout << "can't open output file\n";
         return 0;
@@ -56,16 +51,15 @@ int main(int argc, char* argv[]) {
             my_encoder.count_frequencies(begin, end);
         });
         my_encoder.put_dictionary();
-        if (std::fclose(fin)) {
-            std::cout << "can't close input file\n";
-            return 0;
-        }
-        my_reader(fin, [&my_encoder, &fout](const char *begin, const char *end) {
+        fin.close();
+        std::ifstream fin2{argv[2], std::ios::binary};
+        my_reader(fin2, [&my_encoder, &fout](const char *begin, const char *end) {
             std::string s = my_encoder.encode_text(begin, end);
             my_writer(s, fout);
         });
         auto ss = my_encoder.encode_end();
         my_writer(ss, fout);
+        fin2.close();
     } else if (option == "-d") {
         decoder my_decoder;
         my_reader(fin, [&fout, &my_decoder](const char *begin, const char *end) {
@@ -75,14 +69,8 @@ int main(int argc, char* argv[]) {
         my_decoder.decoder_check_sum();
     } else {
         out_help();
+        fin.close();
     }
-    if (std::fclose(fin)) {
-        std::cout << "can't close input file\n";
-        return 0;
-    }
-    if (std::fclose(fout)) {
-        std::cout << "can't close output file\n";
-        return 0;
-    }
+    fout.close();
     return 0;
 }
