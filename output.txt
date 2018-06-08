@@ -1,0 +1,60 @@
+execve("./archiver", ["./archiver", "-e"], [/* 55 vars */]) = 0
+brk(NULL)                               = 0x5592c22b9000
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=102121, ...}) = 0
+mmap(NULL, 102121, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f54644e1000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/libstdc++.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0p\301\10\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0644, st_size=1586608, ...}) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f54644df000
+mmap(NULL, 3694592, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f5463f4d000
+mprotect(0x7f54640c5000, 2093056, PROT_NONE) = 0
+mmap(0x7f54642c4000, 49152, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x177000) = 0x7f54642c4000
+mmap(0x7f54642d0000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f54642d0000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libgcc_s.so.1", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\300*\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0644, st_size=92520, ...}) = 0
+mmap(NULL, 2188336, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f5463d36000
+mprotect(0x7f5463d4c000, 2093056, PROT_NONE) = 0
+mmap(0x7f5463f4b000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x15000) = 0x7f5463f4b000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\340\22\2\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=1960656, ...}) = 0
+mmap(NULL, 4061792, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f5463956000
+mprotect(0x7f5463b2c000, 2097152, PROT_NONE) = 0
+mmap(0x7f5463d2c000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1d6000) = 0x7f5463d2c000
+mmap(0x7f5463d32000, 14944, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f5463d32000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libm.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\320x\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0644, st_size=1404912, ...}) = 0
+mmap(NULL, 3494696, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f5463600000
+mprotect(0x7f5463755000, 2093056, PROT_NONE) = 0
+mmap(0x7f5463954000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x154000) = 0x7f5463954000
+close(3)                                = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f54644dd000
+arch_prctl(ARCH_SET_FS, 0x7f54644ddd40) = 0
+mprotect(0x7f5463d2c000, 16384, PROT_READ) = 0
+mprotect(0x7f5463954000, 4096, PROT_READ) = 0
+mprotect(0x7f5463f4b000, 4096, PROT_READ) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f54644db000
+mprotect(0x7f54642c4000, 40960, PROT_READ) = 0
+mprotect(0x5592c21b7000, 4096, PROT_READ) = 0
+mprotect(0x7f54644fa000, 4096, PROT_READ) = 0
+munmap(0x7f54644e1000, 102121)          = 0
+brk(NULL)                               = 0x5592c22b9000
+brk(0x5592c22da000)                     = 0x5592c22da000
+fstat(1, {st_mode=S_IFREG|0664, st_size=3922, ...}) = 0
+write(1, "help: ./archiver (-e | -d) sourc"..., 41help: ./archiver (-e | -d) source target
+) = 41
+exit_group(0)                           = ?
++++ exited with 0 +++
