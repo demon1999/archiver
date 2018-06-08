@@ -21,9 +21,10 @@ void my_writer(const std::string &s, std::ofstream& fout) {
 void my_reader(std::ifstream& fin, const std::function<void(const char*, const char*)>& callback) {
     static char buffer[SIZE];
     while (!fin.eof()) {
-        auto cnt = fin.readsome(buffer, SIZE);
+        fin.read(buffer, SIZE);
+        auto cnt = fin.gcount();
         callback(buffer, buffer + cnt);
-        if (!fin) {
+        if (!fin.eof() && !fin) {
             std::cout << "can't read from file\n";
             exit(0);
         }
