@@ -25,8 +25,9 @@ std::string decoder::decode_text(const char* begin, const char* end) {
         auto v = last_piece.pop_bit();
         my_dictionary.make_step(v);
         if (my_dictionary.is_terminal()) {
-            if (my_dictionary.get_terminal_char() < ALPHABET - 1)
-                ans += (char) my_dictionary.get_terminal_char();
+            int ch = my_dictionary.get_terminal_char();
+            if (ch < ALPHABET - 1)
+                ans += ch;
             my_dictionary.zero_pos();
         }
     }

@@ -17,7 +17,7 @@ void encoder::count_frequencies(const char* begin, const char* end) {
     has_been[0] = true;
 }
 void encoder::put_dictionary() {
-    if (has_been[2] || has_been[3]) {
+    if (has_been[2] || has_been[3] || has_been[1]) {
         std::cout << "wrong order of calls\n";
         exit(0);
     }
@@ -40,6 +40,10 @@ std::string encoder::full_pieces() {
 };
 
 std::string encoder::encode_end() {
+    if (has_been[3]) {
+        std::cout << "wrong order of calls\n";
+        exit(0);
+    }
     has_been[3] = true;
     size_t pos = 0;
     auto v = my_dictionary.get_symbol(ALPHABET - 1);
@@ -56,7 +60,7 @@ std::string encoder::encode_end() {
 }
 
 std::string encoder::encode_text(const char* begin, const char* end) {
-    if (has_been[3]) {
+    if (has_been[3] || (!has_been[1])) {
         std::cout << "wrong order of calls\n";
         exit(0);
     }

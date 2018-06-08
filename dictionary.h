@@ -9,7 +9,7 @@
 #include "symbol_code.h"
 
 struct dictionary {
-    static const int ALPHABET = 257, LEN = 64;
+    static const int ALPHABET = 257;
     void make_dictionary(unsigned long long frequencies[ALPHABET]);
     symbol_code get_symbol(int c);
     void zero_pos();
