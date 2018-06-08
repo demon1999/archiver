@@ -80,7 +80,7 @@ TEST(correctness, string_with_same_symbols)
 {
     for (size_t len = 1; len <= 256; len++) {
         std::string s = "";
-        char ch = 'a';
+        char ch = static_cast<char>(rand() % 256);
         for (size_t j = 0; j < len; j++)
             s += ch;
         std::vector<std::string> encode = get_divisions(s, 0);
@@ -89,6 +89,49 @@ TEST(correctness, string_with_same_symbols)
         std::vector<std::string> decode = get_divisions(encode[0], 1);
         for (auto v : decode)
             EXPECT_EQ(v, s);
+    }
+}
+
+TEST(correctness, string_with_random_symbols)
+{
+    for (size_t len = 1; len <= 256; len++) {
+        std::string s = "";
+        for (size_t j = 0; j < len; j++)
+            s += static_cast<char>(rand() % 256);
+        std::vector<std::string> encode = get_divisions(s, 0);
+        for (auto v : encode)
+            EXPECT_EQ(v, encode[0]);
+        std::vector<std::string> decode = get_divisions(encode[0], 1);
+        for (auto v : decode)
+            EXPECT_EQ(v, s);
 
     }
+}
+
+TEST(correctness, big_string_pow_two)
+{
+    std::string s = "";
+    for (size_t i = 0; i < 32 * 1024; i++) {
+        s += static_cast<char>(rand() % 26 + 'a');
+    }
+    std::vector<std::string> encode = get_divisions(s, 0);
+    for (auto v : encode)
+        EXPECT_EQ(v, encode[0]);
+    std::vector<std::string> decode = get_divisions(encode[0], 1);
+    for (auto v : decode)
+        EXPECT_EQ(v, s);
+}
+
+TEST(correctness, big_string)
+{
+    std::string s = "";
+    for (size_t i = 0; i < 32 * 1024 + 1 + rand() % 100; i++) {
+        s += static_cast<char>(rand() % 26 + 'a');
+    }
+    std::vector<std::string> encode = get_divisions(s, 0);
+    for (auto v : encode)
+        EXPECT_EQ(v, encode[0]);
+    std::vector<std::string> decode = get_divisions(encode[0], 1);
+    for (auto v : decode)
+        EXPECT_EQ(v, s);
 }
