@@ -24,7 +24,8 @@ void dictionary::dfs(int nu, unsigned long long s, int szz) {
 
 void dictionary::check_sum() {
     if (my_frequencies.size() != ALPHABET || check_frequencies.size() != ALPHABET) {
-        assert(false);
+        std::cout << "wrong order\n";
+        exit(0);
     }
     for (int i = 0; i < ALPHABET - 1; i++) {
         if (my_frequencies[i] != check_frequencies[i]) {
