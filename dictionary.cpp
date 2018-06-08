@@ -7,6 +7,7 @@
 #include <cassert>
 #include <iostream>
 
+// nu,s,szz =(
 void dictionary::dfs(int nu, unsigned long long s, int szz) {
     if (is_term[nu]) {
         huffman_dictionary[term[nu]] = {s, szz};
@@ -24,6 +25,7 @@ void dictionary::dfs(int nu, unsigned long long s, int szz) {
 
 void dictionary::check_sum() {
     if (my_frequencies.size() != ALPHABET || check_frequencies.size() != ALPHABET) {
+        // =(
         assert(false);
     }
     for (int i = 0; i < ALPHABET - 1; i++) {
@@ -42,35 +44,44 @@ void dictionary::add_vertex() {
 }
 
 void dictionary::make_dictionary(unsigned long long frequencies[ALPHABET]) {
-    add_vertex();
+    add_vertex(); // Ohhhhhh
+
     my_frequencies.resize(ALPHABET);
     check_frequencies.assign(ALPHABET, 0);
     std::copy(frequencies, frequencies + ALPHABET, my_frequencies.begin());
-    std::set<std::pair<unsigned long long, int> > huffman;
+    std::set<std::pair<unsigned long long, int> > huffman; // hello huffman
+
     for (auto j = 0; j < ALPHABET; j++) {
         if (frequencies[j] == 0) continue;
+
         huffman.insert({frequencies[j], static_cast<int> (term.size())});
         add_vertex();
         is_term.back() = true;
         term.back() = j;
     }
+
     if (huffman.size() == 1) {
         go[0][0] = 1;
     }
+
     while (huffman.size() > 1) {
-        auto a = (*huffman.begin());
+        auto a = *huffman.begin();
         huffman.erase(huffman.begin());
-        auto b = (*huffman.begin());
+
+        auto b = *huffman.begin();
         huffman.erase(huffman.begin());
+
         if (huffman.empty()) {
             go[0][0] = a.second;
             go[1][0] = b.second;
             break;
         }
+
         add_vertex();
         go[0][term.size() - 1] = a.second;
         go[1][term.size() - 1] = b.second;
         a.second = static_cast<int>(term.size() - 1);
+
         if (a.first > std::numeric_limits<unsigned long long>::max() - b.first) {
             std::cout << "bad frequencies\n";
             exit(0);
@@ -78,6 +89,7 @@ void dictionary::make_dictionary(unsigned long long frequencies[ALPHABET]) {
         a.first += b.first;
         huffman.insert(a);
     }
+
     dfs(0, 0, 0);
 }
 
@@ -86,8 +98,9 @@ symbol_code dictionary::get_symbol(int c) {
 }
 
 void dictionary::plus_(char c) {
-    check_frequencies[(unsigned char)c]++;
+    check_frequencies[(unsigned char) c]++;
 }
+
 void dictionary::is_bad_pos() {
     if (pos == -1) {
         std::cout << "something wrong while decoding data\n";

@@ -10,17 +10,25 @@
 
 struct bit_queue {
     const int LEN = 64;
+
     bit_queue() {
         start = finish = 0;
         data.push_back(0);
     }
+
     int size();
+
     char pop_char();
+
     bool pop_bit();
+
     unsigned long long pop_long();
+
     void push(symbol_code c);
+
 private:
     std::deque<unsigned long long> data;
     int start, finish;
 };
+
 #endif //ARCHIVER_BIT_QUEUE_H

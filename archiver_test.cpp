@@ -10,7 +10,7 @@
 #include "decoder.h"
 
 namespace {
-    std::string try_division(const std::string& s, const std::vector<size_t>& div, int c) {
+    std::string try_division(const std::string &s, const std::vector<size_t> &div, int c) {
         encoder my_encoder;
         decoder my_decoder;
         std::string ans;
@@ -37,7 +37,7 @@ namespace {
         return ans;
     }
 
-    std::vector<std::string> get_divisions(const std::string& s, int c) {
+    std::vector<std::string> get_divisions(const std::string &s, int c) {
         srand(228);
         std::vector<size_t> div;
         std::vector<std::string> code;
@@ -63,21 +63,28 @@ namespace {
         div.resize(0);
         return code;
     }
-};
-
-TEST(correctness, empty_string)
-{
-    std::string s;
-    std::vector<std::string> encode = get_divisions(s, 0);
-    for (auto v : encode)
-        EXPECT_EQ(v, encode[0]);
-    std::vector<std::string> decode = get_divisions(encode[0], 1);
-    for (auto v : decode)
-        EXPECT_EQ(v, s);
 }
 
-TEST(correctness, string_with_same_symbols)
-{
+TEST(correctness, empty_string) {
+    std::string empty_string;
+
+    encoder my_encoder;
+//  :(
+//  my_encoder.count_frequencies(empty_string.begin(), empty_string.end());
+    my_encoder.count_frequencies(empty_string.c_str(), empty_string.c_str() + empty_string.length());
+    my_encoder.put_dictionary();
+
+    std::string encoded_string = my_encoder.encode_text(empty_string.c_str(), empty_string.c_str() + empty_string.length());
+    encoded_string += my_encoder.encode_end();
+
+    decoder my_decoder;
+    std::string given_string = my_decoder.decode_text(encoded_string.c_str(), encoded_string.c_str() + encoded_string.length());
+    my_decoder.decoder_check_sum();
+
+    EXPECT_EQ(empty_string, given_string);
+}
+
+TEST(correctness, string_with_same_symbols) {
     for (size_t len = 1; len <= 256; len++) {
         std::string s = "";
         char ch = static_cast<char>(rand() % 256);
@@ -92,8 +99,7 @@ TEST(correctness, string_with_same_symbols)
     }
 }
 
-TEST(correctness, string_with_random_symbols)
-{
+TEST(correctness, string_with_random_symbols) {
     for (size_t len = 1; len <= 256; len++) {
         std::string s = "";
         for (size_t j = 0; j < len; j++)
@@ -108,8 +114,7 @@ TEST(correctness, string_with_random_symbols)
     }
 }
 
-TEST(correctness, big_string_pow_two)
-{
+TEST(correctness, big_string_pow_two) {
     std::string s = "";
     for (size_t i = 0; i < 32 * 1024; i++) {
         s += static_cast<char>(rand() % 26 + 'a');
@@ -122,8 +127,7 @@ TEST(correctness, big_string_pow_two)
         EXPECT_EQ(v, s);
 }
 
-TEST(correctness, big_string)
-{
+TEST(correctness, big_string) {
     std::string s = "";
     for (size_t i = 0; i < 32 * 1024 + 1 + rand() % 100; i++) {
         s += static_cast<char>(rand() % 26 + 'a');

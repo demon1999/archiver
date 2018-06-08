@@ -6,7 +6,14 @@
 #include <cassert>
 #include "encoder.h"
 
-void encoder::count_frequencies(const char* begin, const char* end) {
+// take iterators please
+void encoder::count_frequencies(const char *begin, const char *end) {
+    // maybe rename it as the `cur_stage`? and create enum of stages
+    // enum class stage {
+    //   counting_freq,
+    //   putting_into_dict
+    //   ....
+    // }
     if (has_been[1] || has_been[2] || has_been[3]) {
         std::cout << "wrong order of calls\n";
         exit(0);
@@ -16,13 +23,14 @@ void encoder::count_frequencies(const char* begin, const char* end) {
     }
     has_been[0] = true;
 }
+
 void encoder::put_dictionary() {
     if (has_been[2] || has_been[3] || has_been[1]) {
         std::cout << "wrong order of calls\n";
         exit(0);
     }
     my_dictionary.make_dictionary(frequencies);
-    for (unsigned long long int frequencie : frequencies) {
+    for (auto frequencie : frequencies) {
         last_piece.push({frequencie, 64});
     }
     has_been[1] = true;
@@ -37,7 +45,7 @@ std::string encoder::full_pieces() {
         assert(c - last_piece.size() == 8);
     }
     return ans;
-};
+}
 
 std::string encoder::encode_end() {
     if (has_been[3]) {
@@ -48,7 +56,7 @@ std::string encoder::encode_end() {
     size_t pos = 0;
     auto v = my_dictionary.get_symbol(ALPHABET - 1);
     while (last_piece.size() % 8) {
-        unsigned long long c = 0;
+        uint64_t c = 0;
         if (v.first & (1ULL << (v.second - 1 - pos)))
             c = 1;
         last_piece.push({c, 1});
@@ -59,7 +67,7 @@ std::string encoder::encode_end() {
     return ans;
 }
 
-std::string encoder::encode_text(const char* begin, const char* end) {
+std::string encoder::encode_text(const char *begin, const char *end) {
     if (has_been[3] || (!has_been[1])) {
         std::cout << "wrong order of calls\n";
         exit(0);
@@ -67,7 +75,7 @@ std::string encoder::encode_text(const char* begin, const char* end) {
     has_been[2] = true;
     for (auto c = begin; c != end; c++) {
         my_dictionary.plus_(*c);
-        last_piece.push(my_dictionary.get_symbol((unsigned char)(*c)));
+        last_piece.push(my_dictionary.get_symbol((unsigned char) (*c)));
     }
     return full_pieces();
 }
