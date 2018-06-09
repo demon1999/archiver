@@ -7,18 +7,18 @@
 #include "bit_queue.h"
 
 void bit_queue::push(symbol_code c) {
-    if (finish + c.second < LEN) {
-        finish += c.second;
+    if (finish + c.size_of_code < LEN) {
+        finish += c.size_of_code;
         if (LEN - finish < 64)
-            data.back() |= (c.first << (LEN - finish));
+            data.back() |= (c.binary_code << (LEN - finish));
 //        printf("%x %x", data.back(), c.first);
 //        std::cout << " " << finish <<  " " << c.second << "\n";
     } else {
-        data.back() |= (c.first >> (finish + c.second - LEN));
+        data.back() |= (c.binary_code >> (finish + c.size_of_code - LEN));
         data.push_back(0);
-        finish = (finish + c.second) - LEN;
+        finish = (finish + c.size_of_code) - LEN;
         if (finish != 0)
-            data.back() |= (c.first << (LEN - finish));
+            data.back() |= (c.binary_code << (LEN - finish));
     }
 }
 

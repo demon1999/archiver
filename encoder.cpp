@@ -57,10 +57,10 @@ std::string encoder::encode_end() {
     auto v = my_dictionary.get_symbol(ALPHABET - 1);
     while (last_piece.size() % 8) {
         uint64_t c = 0;
-        if (v.first & (1ULL << (v.second - 1 - pos)))
+        if (v.binary_code & (1ULL << (v.size_of_code - 1 - pos)))
             c = 1;
         last_piece.push({c, 1});
-        pos = (pos + 1) % v.second;
+        pos = (pos + 1) % v.size_of_code;
     }
     auto ans = full_pieces();
     my_dictionary.check_sum();

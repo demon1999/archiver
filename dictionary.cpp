@@ -8,25 +8,25 @@
 #include <iostream>
 
 // nu,s,szz =(
-void dictionary::dfs(int nu, unsigned long long s, int szz) {
-    if (is_term[nu]) {
-        huffman_dictionary[term[nu]] = {s, szz};
+void dictionary::dfs(int number_of_vertice, unsigned long long binary_word, int size_of_word) {
+    if (is_term[number_of_vertice]) {
+        huffman_dictionary[term[number_of_vertice]] = {binary_word, size_of_word};
         return;
     }
     for (int j = 0; j < 2; j++)
-        if (go[j][nu] != -1) {
-            s <<= 1;
-            s += j;
-            dfs(go[j][nu], s, szz + 1);
-            s >>= 1;
+        if (go[j][number_of_vertice] != -1) {
+            binary_word <<= 1;
+            binary_word += j;
+            dfs(go[j][number_of_vertice], binary_word, size_of_word + 1);
+            binary_word >>= 1;
         }
 
 }
 
 void dictionary::check_sum() {
     if (my_frequencies.size() != ALPHABET || check_frequencies.size() != ALPHABET) {
-        // =(
-        assert(false);
+        std::cout << "wrong order in decoder\n";
+        exit(0);
     }
     for (int i = 0; i < ALPHABET - 1; i++) {
         if (my_frequencies[i] != check_frequencies[i]) {

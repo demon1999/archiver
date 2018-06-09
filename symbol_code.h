@@ -4,10 +4,9 @@
 
 #ifndef ARCHIVER_SYMBOL_H
 #define ARCHIVER_SYMBOL_H
-// WTF
-// typedef std::pair<uint64_t, int32_t> symbol_code;
-struct symbol_code { // what is this?
-    unsigned long long first; // what does first mean
-    int second;
+
+struct symbol_code {
+    unsigned long long binary_code;
+    int size_of_code;
 };
 #endif //ARCHIVER_SYMBOL_H

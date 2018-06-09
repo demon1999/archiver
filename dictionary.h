@@ -30,7 +30,7 @@ struct dictionary {
 private:
     void add_vertex();
 
-    void dfs(int nu, unsigned long long s, int szz);
+    void dfs(int nu, unsigned long long binary_word, int szz);
 
     int pos;
     std::vector<int> term;
