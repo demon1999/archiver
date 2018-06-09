@@ -6,14 +6,14 @@
 #include <iostream>
 #include "decoder.h"
 
-std::string decoder::decode_text(const char* begin, const char* end) {
+std::string decoder::decode_text(const char *begin, const char *end) {
     for (auto c = begin; c != end; c++) {
-        last_piece.push({static_cast<unsigned long long> ((unsigned char)(*c)), 8});
+        last_piece.push({static_cast<unsigned long long> ((unsigned char) (*c)), 8});
     }
     if (!has_all_frequencies) {
         if (last_piece.size() < LEN * ALPHABET) return "";
         has_all_frequencies = true;
-        for (unsigned long long &frequencie : frequencies) {
+        for (auto &frequencie : frequencies) {
             frequencie = last_piece.pop_long();
         }
         my_dictionary.make_dictionary(frequencies);

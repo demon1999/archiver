@@ -9,17 +9,17 @@ add_executable(archiver
         bit_queue.cpp
         #dictionary.h
         dictionary.cpp
-        #archiver_test.cpp
         #encoder.h
         encoder.cpp
         #decoder.h
         decoder.cpp
-        main.cpp)
-        #gtest/gtest-all.cc
-        #gtest/gtest.h
-        #gtest/gtest_main.cc)
+#        main.cpp)
+        archiver_test.cpp
+        gtest/gtest-all.cc
+        gtest/gtest.h
+        gtest/gtest_main.cc)
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -std=c++11 -pedantic")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++11 -pedantic")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address,undefined -D_GLIBCXX_DEBUG")
 endif()
 

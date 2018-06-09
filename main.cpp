@@ -46,22 +46,25 @@ int main(int argc, char* argv[]) {
         std::cout << "can't open output file\n";
         return 0;
     }
-    encoder my_encoder;
+
     if (option == "-e") {
+        // extract at the function `encode`
+        encoder my_encoder;
         my_reader(fin, [&my_encoder](const char *begin, const char *end) {
             my_encoder.count_frequencies(begin, end);
         });
         my_encoder.put_dictionary();
-        fin.close();
-        std::ifstream fin2{argv[2], std::ios::binary};
+        fin.close(); // ^1
+        std::ifstream fin2{argv[2], std::ios::binary}; // fin.clear(); fin.seekg(0, ios::beg);
         my_reader(fin2, [&my_encoder, &fout](const char *begin, const char *end) {
             std::string s = my_encoder.encode_text(begin, end);
             my_writer(s, fout);
         });
         auto ss = my_encoder.encode_end();
         my_writer(ss, fout);
-        fin2.close();
+        fin2.close(); // ^1
     } else if (option == "-d") {
+        // extract at the function `decode`
         decoder my_decoder;
         my_reader(fin, [&fout, &my_decoder](const char *begin, const char *end) {
             std::string s = my_decoder.decode_text(begin, end);
@@ -70,8 +73,8 @@ int main(int argc, char* argv[]) {
         my_decoder.decoder_check_sum();
     } else {
         out_help();
-        fin.close();
+        fin.close(); // 1: std::ofstream - RAII wrapper, it will be closed automatically
     }
-    fout.close();
+    fout.close(); // ^1
     return 0;
 }
