@@ -27,7 +27,7 @@ std::string decoder::decode_text(const char *begin, const char *end) {
         if (my_dictionary.is_terminal()) {
             int ch = my_dictionary.get_terminal_char();
             if (ch < ALPHABET - 1)
-                ans += ch;
+                ans += static_cast<char>(ch);
             my_dictionary.zero_pos();
         }
     }

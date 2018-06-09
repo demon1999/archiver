@@ -16,10 +16,7 @@ struct encoder {
     static const int ALPHABET = 257;
 
     encoder() {
-        // std::fill
-        for (unsigned long long &frequencie : frequencies) {
-            frequencie = 0;
-        }
+        std::fill(frequencies, frequencies + ALPHABET, 0);
         frequencies[ALPHABET - 1] = 1;
     }
 
