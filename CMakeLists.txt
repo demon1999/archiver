@@ -6,7 +6,6 @@ include_directories(${archiver_SOURCE_DIR})
 
 add_executable(archiver
         #bit_queue.h
-        symbol_code.h
         bit_queue.cpp
         #dictionary.h
         dictionary.cpp

@@ -7,7 +7,6 @@
 #include <cassert>
 #include <iostream>
 
-// nu,s,szz =(
 void dictionary::dfs(int number_of_vertice, unsigned long long binary_word, int size_of_word) {
     if (is_term[number_of_vertice]) {
         huffman_dictionary[term[number_of_vertice]] = {binary_word, size_of_word};
@@ -44,8 +43,7 @@ void dictionary::add_vertex() {
 }
 
 void dictionary::make_dictionary(unsigned long long frequencies[ALPHABET]) {
-    add_vertex(); // Ohhhhhh
-
+    add_vertex();
     my_frequencies.resize(ALPHABET);
     check_frequencies.assign(ALPHABET, 0);
     std::copy(frequencies, frequencies + ALPHABET, my_frequencies.begin());

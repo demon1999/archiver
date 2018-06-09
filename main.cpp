@@ -54,15 +54,13 @@ int main(int argc, char* argv[]) {
             my_encoder.count_frequencies(begin, end);
         });
         my_encoder.put_dictionary();
-        fin.close(); // ^1
-        std::ifstream fin2{argv[2], std::ios::binary}; // fin.clear(); fin.seekg(0, ios::beg);
-        my_reader(fin2, [&my_encoder, &fout](const char *begin, const char *end) {
+        fin.clear(); fin.seekg(0, ios::beg);
+        my_reader(fin, [&my_encoder, &fout](const char *begin, const char *end) {
             std::string s = my_encoder.encode_text(begin, end);
             my_writer(s, fout);
         });
         auto ss = my_encoder.encode_end();
         my_writer(ss, fout);
-        fin2.close(); // ^1
     } else if (option == "-d") {
         // extract at the function `decode`
         decoder my_decoder;
@@ -73,8 +71,6 @@ int main(int argc, char* argv[]) {
         my_decoder.decoder_check_sum();
     } else {
         out_help();
-        fin.close(); // 1: std::ofstream - RAII wrapper, it will be closed automatically
     }
-    fout.close(); // ^1
     return 0;
 }
