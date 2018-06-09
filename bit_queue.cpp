@@ -9,7 +9,7 @@
 void bit_queue::push(symbol_code c) {
     if (finish + c.size_of_code < LEN) {
         finish += c.size_of_code;
-        if (LEN - finish < 64)
+        if (LEN - finish < LEN)
             data.back() |= (c.binary_code << (LEN - finish));
     } else {
         data.back() |= (c.binary_code >> (finish + c.size_of_code - LEN));
