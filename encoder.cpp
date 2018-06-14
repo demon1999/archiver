@@ -7,7 +7,6 @@
 #include <functional>
 #include "encoder.h"
 
-// take iterators please
 void encoder::count_frequencies(const char *begin, const char *end) {
     if (my_state != counting_freq && my_state != start) {
         std::cout << "wrong order of calls\n";
