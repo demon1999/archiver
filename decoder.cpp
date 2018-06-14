@@ -7,7 +7,7 @@
 #include <functional>
 #include "decoder.h"
 
-std::string decoder::decode_text(const std::basic_string_view<char> &s) {
+std::string decoder::decode_text(const std::string_view &s) {
     for (char c : s) {
         last_piece.push({static_cast<unsigned long long> ((unsigned char) c), 8});
     }
@@ -40,7 +40,7 @@ void decoder::decoder_check_sum() {
 }
 
 void decoder::decode_from_files(std::ifstream &fin, std::ofstream &fout) {
-    my_stream.my_reader(fin, [&fout, this](const std::basic_string_view<char> &s) {
+    my_stream.my_reader(fin, [&fout, this](const std::string_view &s) {
         std::string t = decode_text(s);
         my_stream.my_writer(t, fout);
     });

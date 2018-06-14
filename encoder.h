@@ -11,6 +11,8 @@
 #include "bit_queue.h"
 #include "file_lib.h"
 
+#include <string_view>
+
 #ifndef ARCHIVER_ARCHIEVER_H
 #define ARCHIVER_ARCHIEVER_H
 
@@ -29,9 +31,9 @@ private:
 
     std::string encode_end();
 
-    void count_frequencies(const std::basic_string_view<char> &s);
+    void count_frequencies(const std::string_view &s);
 
-    std::string encode_text(const std::basic_string_view<char> &s);
+    std::string encode_text(const std::string_view &s);
 
     std::string full_pieces();
 

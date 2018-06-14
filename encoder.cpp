@@ -7,7 +7,7 @@
 #include <functional>
 #include "encoder.h"
 
-void encoder::count_frequencies(const std::basic_string_view<char> &s) {
+void encoder::count_frequencies(const std::string_view &s) {
     if (my_state != counting_freq && my_state != start) {
         std::cout << "wrong order of calls\n";
         exit(0);
@@ -62,7 +62,7 @@ std::string encoder::encode_end() {
     return ans;
 }
 
-std::string encoder::encode_text(const std::basic_string_view<char> &s) {
+std::string encoder::encode_text(const std::string_view &s) {
     if (my_state != encoding_text && my_state != making_dict) {
         std::cout << "wrong order of calls\n";
         exit(0);
@@ -76,14 +76,14 @@ std::string encoder::encode_text(const std::basic_string_view<char> &s) {
 }
 
 void encoder::encode_from_files(std::ifstream &fin, std::ofstream &fout) {
-    my_stream.my_reader(fin, [this](const std::basic_string_view<char> &s) {
+    my_stream.my_reader(fin, [this](const std::string_view &s) {
         count_frequencies(s);
     });
     put_dictionary();
 
     fin.clear();
     fin.seekg(0, std::ios::beg);
-    my_stream.my_reader(fin, [this, &fout](const std::basic_string_view<char> &s) {
+    my_stream.my_reader(fin, [this, &fout](const std::string_view &s) {
         std::string t = encode_text(s);
         my_stream.my_writer(t, fout);
     });

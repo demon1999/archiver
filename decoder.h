@@ -9,6 +9,7 @@
 #include "dictionary.h"
 #include "bit_queue.h"
 #include "file_lib.h"
+#include <string_view>
 
 #ifndef ARCHIVER_DECODER_H
 #define ARCHIVER_DECODER_H
@@ -28,7 +29,7 @@ struct decoder {
 
 private:
     void decoder_check_sum();
-    std::string decode_text(const std::basic_string_view<char> &s);
+    std::string decode_text(const std::string_view &s);
     unsigned long long frequencies[ALPHABET];
     bool has_all_frequencies;
     file_lib my_stream;
