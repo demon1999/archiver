@@ -20,12 +20,12 @@ struct file_lib {
         }
     }
 
-    void my_reader(std::ifstream& fin, const std::function<void(const char*, const char*)>& callback) {
+    void my_reader(std::ifstream& fin, const std::function<void(std::basic_string_view<char>)>& callback) {
         static char buffer[SIZE];
         while (!fin.eof()) {
             fin.read(buffer, SIZE);
             auto cnt = fin.gcount();
-            callback(buffer, buffer + cnt);
+            callback(std::basic_string_view<char> (buffer, cnt));
             if (!fin.eof() && !fin) {
                 std::cout << "can't read from file\n";
                 exit(0);

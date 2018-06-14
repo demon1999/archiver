@@ -5,15 +5,16 @@
 #include <iostream>
 #include <cassert>
 #include <functional>
+#include <string_view>
 #include "encoder.h"
 
-void encoder::count_frequencies(const char *begin, const char *end) {
+void encoder::count_frequencies(const std::basic_string_view<char> &s) {
     if (my_state != counting_freq && my_state != start) {
         std::cout << "wrong order of calls\n";
         exit(0);
     }
     my_state = counting_freq;
-    for (auto i = begin; i != end; i++) {
+    for (auto i = s.begin(); i != s.end(); i++) {
         frequencies[(unsigned char) (*i)]++;
     }
 }
@@ -61,13 +62,13 @@ std::string encoder::encode_end() {
     return ans;
 }
 
-std::string encoder::encode_text(const char *begin, const char *end) {
+std::string encoder::encode_text(const std::basic_string_view<char> &s) {
     if (my_state != encoding_text && my_state != making_dict) {
         std::cout << "wrong order of calls\n";
         exit(0);
     }
     my_state = encoding_text;
-    for (auto c = begin; c != end; c++) {
+    for (auto c = s.begin(); c != s.end(); c++) {
         my_dictionary.plus_(*c);
         last_piece.push(my_dictionary.get_symbol((unsigned char) (*c)));
     }
@@ -75,16 +76,16 @@ std::string encoder::encode_text(const char *begin, const char *end) {
 }
 
 void encoder::encode_from_files(std::ifstream &fin, std::ofstream &fout) {
-    my_stream.my_reader(fin, [this](const char *begin, const char *end) {
-        count_frequencies(begin, end);
+    my_stream.my_reader(fin, [this](const std::basic_string_view<char> &s) {
+        count_frequencies(s);
     });
     put_dictionary();
 
     fin.clear();
     fin.seekg(0, std::ios::beg);
-    my_stream.my_reader(fin, [this, &fout](const char *begin, const char *end) {
-        std::string s = encode_text(begin, end);
-        my_stream.my_writer(s, fout);
+    my_stream.my_reader(fin, [this, &fout](const std::basic_string_view<char> &s) {
+        std::string t = encode_text(s);
+        my_stream.my_writer(t, fout);
     });
     auto ss = encode_end();
     my_stream.my_writer(ss, fout);

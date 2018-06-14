@@ -29,9 +29,9 @@ private:
 
     std::string encode_end();
 
-    void count_frequencies(const char *begin, const char *end);
+    void count_frequencies(const std::basic_string_view<char> &s);
 
-    std::string encode_text(const char *begin, const char *end);
+    std::string encode_text(const std::basic_string_view<char> &s);
 
     std::string full_pieces();
 

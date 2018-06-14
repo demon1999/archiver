@@ -28,7 +28,7 @@ struct decoder {
 
 private:
     void decoder_check_sum();
-    std::string decode_text(const char *begin, const char *end);
+    std::string decode_text(const std::basic_string_view<char> &s);
     unsigned long long frequencies[ALPHABET];
     bool has_all_frequencies;
     file_lib my_stream;

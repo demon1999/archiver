@@ -7,8 +7,8 @@
 #include <functional>
 #include "decoder.h"
 
-std::string decoder::decode_text(const char *begin, const char *end) {
-    for (auto c = begin; c != end; c++) {
+std::string decoder::decode_text(const std::basic_string_view<char> &s) {
+    for (auto c = s.begin(); c != s.end(); c++) {
         last_piece.push({static_cast<unsigned long long> ((unsigned char) (*c)), 8});
     }
     if (!has_all_frequencies) {
@@ -40,9 +40,9 @@ void decoder::decoder_check_sum() {
 }
 
 void decoder::decode_from_files(std::ifstream &fin, std::ofstream &fout) {
-    my_stream.my_reader(fin, [&fout, this](const char *begin, const char *end) {
-        std::string s = decode_text(begin, end);
-        my_stream.my_writer(s, fout);
+    my_stream.my_reader(fin, [&fout, this](const std::basic_string_view<char> &s) {
+        std::string t = decode_text(s);
+        my_stream.my_writer(t, fout);
     });
     decoder_check_sum();
 }
