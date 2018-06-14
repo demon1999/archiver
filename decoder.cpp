@@ -4,7 +4,9 @@
 
 #include <set>
 #include <iostream>
+#include <functional>
 #include "decoder.h"
+#include <fstream>
 
 std::string decoder::decode_text(const char *begin, const char *end) {
     for (auto c = begin; c != end; c++) {
@@ -36,4 +38,12 @@ std::string decoder::decode_text(const char *begin, const char *end) {
 
 void decoder::decoder_check_sum() {
     my_dictionary.check_sum();
+}
+
+void decoder::decode_from_files(std::ifstream &fin, std::ofstream &fout) {
+    my_stream.my_reader(fin, [&fout, this](const char *begin, const char *end) {
+        std::string s = decode_text(begin, end);
+        my_stream.my_writer(s, fout);
+    });
+    decoder_check_sum();
 }

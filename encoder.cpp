@@ -4,36 +4,31 @@
 #include <set>
 #include <iostream>
 #include <cassert>
+#include <functional>
 #include "encoder.h"
 
 // take iterators please
 void encoder::count_frequencies(const char *begin, const char *end) {
-    // maybe rename it as the `cur_stage`? and create enum of stages
-    // enum class stage {
-    //   counting_freq,
-    //   putting_into_dict
-    //   ....
-    // }
-    if (has_been[1] || has_been[2] || has_been[3]) {
+    if (my_state != counting_freq && my_state != start) {
         std::cout << "wrong order of calls\n";
         exit(0);
     }
+    my_state = counting_freq;
     for (auto i = begin; i != end; i++) {
         frequencies[(unsigned char) (*i)]++;
     }
-    has_been[0] = true;
 }
 
 void encoder::put_dictionary() {
-    if (has_been[2] || has_been[3] || has_been[1]) {
+    if (my_state != start && my_state != counting_freq) {
         std::cout << "wrong order of calls\n";
         exit(0);
     }
+    my_state = making_dict;
     my_dictionary.make_dictionary(frequencies);
     for (auto frequencie : frequencies) {
         last_piece.push({frequencie, 64});
     }
-    has_been[1] = true;
 }
 
 std::string encoder::full_pieces() {
@@ -48,11 +43,11 @@ std::string encoder::full_pieces() {
 }
 
 std::string encoder::encode_end() {
-    if (has_been[3]) {
+    if (my_state != encoding_text && my_state != making_dict) {
         std::cout << "wrong order of calls\n";
         exit(0);
     }
-    has_been[3] = true;
+    my_state = encoding_end;
     size_t pos = 0;
     auto v = my_dictionary.get_symbol(ALPHABET - 1);
     while (last_piece.size() % 8) {
@@ -68,14 +63,31 @@ std::string encoder::encode_end() {
 }
 
 std::string encoder::encode_text(const char *begin, const char *end) {
-    if (has_been[3] || (!has_been[1])) {
+    if (my_state != encoding_text && my_state != making_dict) {
         std::cout << "wrong order of calls\n";
         exit(0);
     }
-    has_been[2] = true;
+    my_state = encoding_text;
     for (auto c = begin; c != end; c++) {
         my_dictionary.plus_(*c);
         last_piece.push(my_dictionary.get_symbol((unsigned char) (*c)));
     }
     return full_pieces();
+}
+
+void encoder::encode_from_files(std::ifstream &fin, std::ofstream &fout) {
+    my_stream.my_reader(fin, [this](const char *begin, const char *end) {
+        count_frequencies(begin, end);
+    });
+    put_dictionary();
+    std::string s = "";
+
+    fin.clear();
+    fin.seekg(0, std::ios::beg);
+    my_stream.my_reader(fin, [this, &fout](const char *begin, const char *end) {
+        std::string s = encode_text(begin, end);
+        my_stream.my_writer(s, fout);
+    });
+    auto ss = encode_end();
+    my_stream.my_writer(ss, fout);
 }

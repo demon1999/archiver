@@ -8,6 +8,7 @@
 #include <vector>
 #include "dictionary.h"
 #include "bit_queue.h"
+#include "file_lib.h"
 
 #ifndef ARCHIVER_DECODER_H
 #define ARCHIVER_DECODER_H
@@ -15,14 +16,13 @@
 
 struct decoder {
     static const int ALPHABET = 257;
-
     static const int LEN = 64;
 
     decoder() {
         std::fill(frequencies, frequencies + ALPHABET, 0);
         has_all_frequencies = false;
     }
-
+    void decode_from_files(std::ifstream &fin, std::ofstream &fout);
     void decoder_check_sum();
 
     ~decoder() = default;
@@ -32,6 +32,7 @@ struct decoder {
 private:
     unsigned long long frequencies[ALPHABET];
     bool has_all_frequencies;
+    file_lib my_stream;
     bit_queue last_piece;
     dictionary my_dictionary;
 };
