@@ -8,8 +8,8 @@
 #include "decoder.h"
 
 std::string decoder::decode_text(const std::basic_string_view<char> &s) {
-    for (auto c = s.begin(); c != s.end(); c++) {
-        last_piece.push({static_cast<unsigned long long> ((unsigned char) (*c)), 8});
+    for (char c : s) {
+        last_piece.push({static_cast<unsigned long long> ((unsigned char) c), 8});
     }
     if (!has_all_frequencies) {
         if (last_piece.size() < LEN * ALPHABET) return "";

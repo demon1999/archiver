@@ -5,7 +5,6 @@
 #include <iostream>
 #include <cassert>
 #include <functional>
-#include <string_view>
 #include "encoder.h"
 
 void encoder::count_frequencies(const std::basic_string_view<char> &s) {
@@ -14,8 +13,9 @@ void encoder::count_frequencies(const std::basic_string_view<char> &s) {
         exit(0);
     }
     my_state = counting_freq;
-    for (auto i = s.begin(); i != s.end(); i++) {
-        frequencies[(unsigned char) (*i)]++;
+
+    for (auto i : s) {
+        frequencies[(unsigned char) i]++;
     }
 }
 
@@ -68,9 +68,9 @@ std::string encoder::encode_text(const std::basic_string_view<char> &s) {
         exit(0);
     }
     my_state = encoding_text;
-    for (auto c = s.begin(); c != s.end(); c++) {
-        my_dictionary.plus_(*c);
-        last_piece.push(my_dictionary.get_symbol((unsigned char) (*c)));
+    for (auto c : s) {
+        my_dictionary.plus_(c);
+        last_piece.push(my_dictionary.get_symbol((unsigned char) (c)));
     }
     return full_pieces();
 }
