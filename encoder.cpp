@@ -80,7 +80,6 @@ void encoder::encode_from_files(std::ifstream &fin, std::ofstream &fout) {
         count_frequencies(begin, end);
     });
     put_dictionary();
-    std::string s = "";
 
     fin.clear();
     fin.seekg(0, std::ios::beg);

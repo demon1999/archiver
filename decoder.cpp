@@ -6,7 +6,6 @@
 #include <iostream>
 #include <functional>
 #include "decoder.h"
-#include <fstream>
 
 std::string decoder::decode_text(const char *begin, const char *end) {
     for (auto c = begin; c != end; c++) {
