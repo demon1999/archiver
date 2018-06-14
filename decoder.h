@@ -23,13 +23,12 @@ struct decoder {
         has_all_frequencies = false;
     }
     void decode_from_files(std::ifstream &fin, std::ofstream &fout);
-    void decoder_check_sum();
 
     ~decoder() = default;
 
-    std::string decode_text(const char *begin, const char *end);
-
 private:
+    void decoder_check_sum();
+    std::string decode_text(const char *begin, const char *end);
     unsigned long long frequencies[ALPHABET];
     bool has_all_frequencies;
     file_lib my_stream;
