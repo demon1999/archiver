@@ -76,6 +76,9 @@ std::string encoder::encode_text(const std::string_view &s) {
 }
 
 void encoder::encode_from_files(std::ifstream &fin, std::ofstream &fout) {
+    std::fill(frequencies, frequencies + ALPHABET, 0);
+    frequencies[ALPHABET - 1] = 1;
+    my_state = start;
     my_stream.my_reader(fin, [this](const std::string_view &s) {
         count_frequencies(s);
     });

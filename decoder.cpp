@@ -40,6 +40,8 @@ void decoder::decoder_check_sum() {
 }
 
 void decoder::decode_from_files(std::ifstream &fin, std::ofstream &fout) {
+    std::fill(frequencies, frequencies + ALPHABET, 0);
+    has_all_frequencies = false;
     my_stream.my_reader(fin, [&fout, this](const std::string_view &s) {
         std::string t = decode_text(s);
         my_stream.my_writer(t, fout);
