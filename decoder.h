@@ -26,7 +26,7 @@ struct decoder {
     void decode_from_files(std::ifstream &fin, std::ofstream &fout);
 
     ~decoder() = default;
-
+    std::string decode_string(const std::string &s);
 private:
     void decoder_check_sum();
     std::string decode_text(const std::string_view &s);

@@ -21,6 +21,28 @@ struct file_lib {
         }
     }
 
+    std::string my_string(const std::string& s, const std::function<void(std::ifstream&, std::ofstream&)>& callback) {
+        std::string q, t;
+        std::ofstream f("test.txt", std::ofstream::binary);
+        f.clear();
+        f << s;
+        f.close();
+        std::ifstream fin{"test.txt", std::ifstream::binary};
+        std::ofstream fout{"testout.txt", std::ofstream::binary};
+        fout.clear();
+        callback(fin, fout);
+        fin.close();
+        fout.close();
+        std::ifstream fin2("testout.txt", std::ifstream::binary);
+        while (getline(fin2, q)) {
+            t += q;
+            t += "\n";
+        }
+        if (!t.empty())
+            t.pop_back();
+        return t;
+    }
+
     void my_reader(std::ifstream& fin, const std::function<void(std::string_view)>& callback) {
         static char buffer[SIZE];
         while (!fin.eof()) {

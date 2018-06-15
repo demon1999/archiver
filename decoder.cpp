@@ -46,3 +46,9 @@ void decoder::decode_from_files(std::ifstream &fin, std::ofstream &fout) {
     });
     decoder_check_sum();
 }
+
+std::string decoder::decode_string(const std::string &s) {
+    return my_stream.my_string(s, [this](std::ifstream &fin, std::ofstream &fout) {
+        decode_from_files(fin, fout);
+    });
+}

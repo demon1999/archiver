@@ -13,30 +13,8 @@ namespace {
     void try_string(const std::string &s) {
         encoder my_encoder;
         decoder my_decoder;
-        std::string q = s, t;
-        std::ofstream f("test.txt", std::ofstream::binary);
-        f.clear();
-        f << q;
-        f.close();
-        std::ifstream fin{"test.txt", std::ifstream::binary};
-        std::ofstream fout{"testout.txt", std::ofstream::binary};
-        fout.clear();
-        my_encoder.encode_from_files(fin, fout);
-        fin.close();
-        fout.close();
-        std::ifstream fin2{"testout.txt", std::ifstream::binary};
-        std::ofstream fout2{"test.txt", std::ofstream::binary};
-        fout2.clear();
-        my_decoder.decode_from_files(fin2, fout2);
-        fin2.close();
-        fout2.close();
-        std::ifstream ff("test.txt", std::ifstream::binary);
-        while (getline(ff, q)) {
-            t += q;
-            t += "\n";
-        }
-        if (!t.empty())
-            t.pop_back();
+        std::string t = my_encoder.encode_string(s);
+        t = my_decoder.decode_string(t);
         EXPECT_EQ(s, t);
     }
 }

@@ -90,3 +90,9 @@ void encoder::encode_from_files(std::ifstream &fin, std::ofstream &fout) {
     auto ss = encode_end();
     my_stream.my_writer(ss, fout);
 }
+
+std::string encoder::encode_string(const std::string &s) {
+    return my_stream.my_string(s, [this](std::ifstream &fin, std::ofstream &fout) {
+        encode_from_files(fin, fout);
+    });
+}

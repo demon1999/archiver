@@ -25,7 +25,7 @@ struct encoder {
 
     ~encoder() = default;
     void encode_from_files(std::ifstream &fin, std::ofstream &fout);
-
+    std::string encode_string(const std::string &s);
 private:
     void put_dictionary();
 
